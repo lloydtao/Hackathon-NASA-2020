@@ -45,6 +45,22 @@ def profile(request):
     }
     return render(request, 'users/profile.html', context)
 
+@login_required
+def password_change(request):
+    if request.method == 'POST':
+        password_form = PasswordChangeForm(request.user, request.POST)
+        if password_form.is_valid():
+            password_form.save()
+            messages.success(request, f'Your password has been changed.')
+            return redirect('profile')
+    else:
+        password_form = PasswordChangeForm(request.user)
+        
+    context = {
+        'password_form': password_form
+    }
+    return render(request, 'users/password_change.html', context)
+
 
 def logout_view(request):
     if request.user is not None:
