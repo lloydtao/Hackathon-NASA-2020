@@ -6,7 +6,7 @@ from .models import Hub, Activity, Membership
 
 class HomeView(ListView):
     model = Hub
-    template_name = 'bunchup/index.html'
+    template_name = 'bunchup/index_new.html'
     context_object_name = 'hubs'
 
 class HubView(DetailView):
