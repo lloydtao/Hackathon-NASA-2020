@@ -1,0 +1,15 @@
+{% extends "bunchup/base.html" %}
+
+{% block content %}
+	{% for hub in hubs %}
+		<article class="media content-section">
+			<img class="rounded-circle article-img" src="{{ hub.image.url }}">
+			<div class="media-body">
+				<div class="article-metadata">
+					<a class="mr-2" href="{% url 'user-posts' post.author.username %}">{{ hub.title }}</a>
+				</div>
+				<p class="article-content">{{ hub.description }}</p>
+			</div>
+		</article>
+	{% endfor %}
+{% endblock content %}
