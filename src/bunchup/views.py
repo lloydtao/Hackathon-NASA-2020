@@ -10,8 +10,6 @@ class HomeView(ListView):
 
 class HubView(DetailView):
     model = Hub
-    template_name = 'bunchup/hub.html'
-    context_object_name = 'hubs'
     
 class HubCreateView(LoginRequiredMixin, CreateView):
     model = Hub
