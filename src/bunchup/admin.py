@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models import Tag, Activity, Hub, Room, Message, Membership
 
 # Register your models here.
 admin.site.register(Tag)
