@@ -1,8 +1,12 @@
 {% extends "bunchup/base.html" %}
 
 {% block content %}
-	<div>
+	<div class="bg-white rounded p-5">
 		<p>You have successfully logged out.</p>
-		<a href="{% url 'register' %}">Log in</a>.
+		<a href="{% url 'login' %}">
+            <div class="btn btn-primary">
+                Login
+            </div>
+        </a>
 	</div>
 {% endblock content %}
