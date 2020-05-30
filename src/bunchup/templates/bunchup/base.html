@@ -1,0 +1,74 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<!-- Metadata -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="theme-color" content="#202020">
+		<meta name="description" content="">
+		<meta name="author" content="Lewis Lloyd">
+		<title>Home - Bunchup</title>
+	
+	    <!-- Favicons -->
+		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon.ico' %}">
+		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon-32x32.png' %}" sizes="32x32" type="image/png">
+		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon-16x16.png' %}" sizes="16x16" type="image/png">
+		<link rel="apple-touch-icon" href="{% static 'bunchup/img/favicons/apple-touch-icon.png' %}" sizes="180x180">
+	
+		<!-- Bootstrap CSS and Stylesheets -->
+		<link rel="stylesheet" href="{% static 'bunchup/bootstrap/bootstrap.css' %}">
+		<link rel="stylesheet" href="{% static 'bunchup/css/styles.css' %}">
+		<link rel="stylesheet" href="{% static 'bunchup/css/font%20awesome-free-5.11.2-all.css' %}">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+	</head>
+	<body>
+		<header class="site-header">
+			<nav class="navbar navbar-expand-md navbar-dark fixed-top">
+				<div class="container">
+					<a class="navbar-brand mr-4" href="/">Bunchup</a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarToggle">
+						<div class="navbar-nav mr-auto">
+							<a class="nav-item nav-link" href="{% url 'bunchup-home' %}">Home</a>
+						</div>
+						<!-- Navbar Right Side -->
+						{% if user.is_authenticated %}
+						<div class="navbar-nav">
+							<a class="nav-item nav-link" href="{% url 'profile' %}">{{ user.username }}</a>
+							<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+						</div>
+						{% else %}
+						<div class="navbar-nav">
+							<a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+							<a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+						</div>
+						{% endif %}
+					</div>
+				</div>
+			</nav>
+		</header>
+		<main role="main">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-8">
+						{% if messages %}
+							{% for message in messages %}
+								<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+							{% endfor %}
+						{% endif %}
+						{% block content %}{% endblock %}
+					</div>
+				</div>
+			</div>
+		</main>
+		<!-- Optional JavaScript -->
+		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+	</body>
+</html>
