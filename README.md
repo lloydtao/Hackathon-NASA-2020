@@ -46,3 +46,18 @@ The Art of It All - Express the experience of living through COVID-19 with a wor
 **Space**
 
 A World Away - Identify psychologic/technical risks in space caused by COVID-19, and evaluate on-Earth support.
+
+## Analysis
+
+- Practical solutions for practicing social distancing.
+
+A platform of communities to bring people together with friends before gaming/online activities.
+
+- Offer insights for astronauts suffering from isolation on spaceflight.
+
+Big data science to see how the mood of players has improved.
+
+- Contain or reference space agency data.
+
+Reference HI-SEAS to see isolation problems and how astronauts deal with them.
+
