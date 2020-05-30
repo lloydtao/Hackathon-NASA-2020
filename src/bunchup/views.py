@@ -16,20 +16,18 @@ class HubCreateView(LoginRequiredMixin, CreateView):
     context_object_name = 'hubs'
     fields = ['name', 'description', 'locked', 'tags']
 
-
-class IsHubOwnerMixin(UserPassesTestMixin):
-    def test_func(self):
-        if self.get_object().membership_set.filter(user=self.request.user).exists():
-            return self.get_object().membership_set.get(user=self.request.user).is_admin
-        else:
-            return False
-
-
-class HubUpdateView(LoginRequiredMixin, IsHubOwnerMixin, UpdateView):
+class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Hub
     context_object_name = 'hubs'
     template_name = 'bunchup/hub_update.html'
     fields = ['name', 'description', 'locked', 'tags']
+    
+    def test_func(self):
+        hub = self.get_object()
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
 
 
 
