@@ -1,5 +1,5 @@
 body {
-  background: #393e46;
+  /* background: #393e46; */
   color: #333333;
   margin-top: 5rem;
 }
@@ -49,8 +49,4 @@ ul {
 
 .asteriskField {
     display: none;
-}
-
-.cute-container {
-    max-width: 600px;
 }
