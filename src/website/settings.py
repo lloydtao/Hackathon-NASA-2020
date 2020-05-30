@@ -37,8 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
-    'bunchup',
+    'users.apps.UsersConfig',
+    'bunchup.apps.BunchupConfig',
     'crispy_forms',
 ]
 
