@@ -1,0 +1,59 @@
+/* Main */
+
+html {
+    background: linear-gradient(to bottom, #202020, #111119) fixed;
+    overflow-y: scroll;
+}
+
+body {
+    font-family: Raleway,sans-serif;
+    color: #eee;
+    background: transparent;
+	text-align: center;
+    margin: 0 auto;
+}
+
+header	{
+    margin: 16px;
+    display: block;
+}
+
+/* Headings */
+
+h1{font-size:64px}
+h2{font-size:32px}
+h3{font-size:24px}
+h4{font-size:20px}
+h5{font-size:16px}
+h6{font-size:14px}
+
+h1,h2,h3,h4,h5,h6.h7	{
+    font-weight: 400;
+}
+
+p {
+    font-size: 14px;
+}
+
+/* Links */
+
+a {
+    color: #bbb;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+a:hover {
+    color: #eee;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+a.home {
+    text-decoration: none;
+    color: #eee;
+}
