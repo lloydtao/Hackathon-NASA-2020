@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib import messages
+from django.contrib.auth import logout
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+
 
 def register(request):
     if request.method == 'POST':
@@ -42,3 +44,10 @@ def profile(request):
         'password_form': password_form
     }
     return render(request, 'users/profile.html', context)
+
+
+def logout_view(request):
+    if request.user is not None:
+        logout(request)
+
+    return redirect('bunchup-home')
