@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Hub, Activity
 
 class HomeView(ListView):
@@ -40,6 +40,17 @@ class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         else:
             return False
 
+
+class HubDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Hub
+    success_url = '/'
+        
+    def test_func(self):
+        hub = self.get_object()
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
 
 
 
