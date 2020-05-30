@@ -1,7 +1,8 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Hub, Activity
+from .models import Hub, Activity, Membership
 
 class HomeView(ListView):
     model = Hub
@@ -24,8 +25,16 @@ class HubView(DetailView):
 
 class HubCreateView(LoginRequiredMixin, CreateView):
     model = Hub
-    context_object_name = 'hubs'
     fields = ['name', 'description', 'locked', 'tags']
+
+    def form_valid(self, form):
+        self.object = form.save()
+        Membership.objects.create(
+            user=self.request.user,
+            hub=self.object,
+            is_admin=True
+        )
+        return HttpResponseRedirect(self.get_success_url())
 
 class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Hub
