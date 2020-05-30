@@ -1,8 +1,13 @@
 from django.db import models
+from django.utils import timezone
 # Create your models here.
 from django.contrib.auth.models import User
 
 
+def one_day_hence():
+    return timezone.now() + timezone.timedelta(days=1)
+    
+    
 class Tag(models.Model):
     title = models.CharField(max_length=32)
 
@@ -10,19 +15,19 @@ class Tag(models.Model):
 class Activity(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
-    room = models.OneToOneField('Room', on_delete=models.CASCADE)
-    start_date = models.DateTimeField()
-    finish_date = models.DateTimeField()
-    tags = models.ManyToManyField(Tag)
+    room = models.OneToOneField('Room', on_delete=models.CASCADE, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    start_date = models.DateTimeField(default=timezone.now)
+    finish_date = models.DateTimeField(default=one_day_hence())
 
 
 class Hub(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
     locked = models.BooleanField(default=False)
-    tags = models.ManyToManyField(Tag)
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, null=True)
-    users = models.ManyToManyField(User, through='Membership')
+    tags = models.ManyToManyField(Tag, blank=True)
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE, null=True, blank=True)
+    users = models.ManyToManyField(User, through='Membership', null=True, blank=True)
 
 
 class Room(models.Model):
