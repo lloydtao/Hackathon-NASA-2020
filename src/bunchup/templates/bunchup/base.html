@@ -6,28 +6,27 @@
 		<!-- Metadata -->
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<meta name="theme-color" content="#202020">
-		<meta name="description" content="">
-		<meta name="author" content="Lewis Lloyd">
-		<title>Home - Bunchup</title>
+		<title>Bunchup</title>
 	
-	    <!-- Favicons -->
+		<!-- Favicons -->
 		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon.ico' %}">
 		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon-32x32.png' %}" sizes="32x32" type="image/png">
 		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon-16x16.png' %}" sizes="16x16" type="image/png">
 		<link rel="apple-touch-icon" href="{% static 'bunchup/img/favicons/apple-touch-icon.png' %}" sizes="180x180">
+		
+		<meta name="theme-color" content="#202020">
 	
 		<!-- Bootstrap CSS and Stylesheets -->
 		<link rel="stylesheet" href="{% static 'bunchup/bootstrap/bootstrap.css' %}">
-		<link rel="stylesheet" href="{% static 'bunchup/css/styles.css' %}">
+		<link rel="stylesheet" href="{% static 'bunchup/css/main.css' %}">
 		<link rel="stylesheet" href="{% static 'bunchup/css/font%20awesome-free-5.11.2-all.css' %}">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 	</head>
 	<body>
 		<header class="site-header">
-			<nav class="navbar navbar-expand-md navbar-dark fixed-top">
+			<nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
 				<div class="container">
-					<a class="navbar-brand mr-4" href="/">Bunchup</a>
+					<a class="navbar-brand mr-4" href="{% url 'bunchup-home' %}">Bunch Up</a>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
@@ -51,20 +50,32 @@
 				</div>
 			</nav>
 		</header>
-		<main role="main">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-8">
-						{% if messages %}
-							{% for message in messages %}
-								<div class="alert alert-{{ message.tags }}">{{ message }}</div>
-							{% endfor %}
-						{% endif %}
-						{% block content %}{% endblock %}
+		<main role="main" class="container">
+			<div class="row">
+				<div class="col-md-8">
+					{% if messages %}
+						{% for message in messages %}
+							<div class="alert alert-{{ message.tags }}">{{ message }}</div>
+						{% endfor %}
+					{% endif %}
+					{% block content %}{% endblock %}
+				</div>
+				<div class="col-md-4">
+					<div class="content-section">
+						<h3>Sidebar</h3>
+						<p class='text-muted'>Extra links here, such as:
+							<ul class="list-group">
+								<li class="list-group-item list-group-item-light">Latest Activities</li>
+								<li class="list-group-item list-group-item-light">Announcements</li>
+								<li class="list-group-item list-group-item-light">Calendars</li>
+								<li class="list-group-item list-group-item-light">etc</li>
+							</ul>
+						</p>
 					</div>
 				</div>
 			</div>
 		</main>
+	
 		<!-- Optional JavaScript -->
 		<!-- jQuery first, then Popper.js, then Bootstrap JS -->
 		<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
