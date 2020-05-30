@@ -3,6 +3,7 @@ from django.utils import timezone
 # Create your models here.
 from django.contrib.auth.models import User
 
+from PIL import Image
 
 def one_day_hence():
     return timezone.now() + timezone.timedelta(days=1)
@@ -21,6 +22,19 @@ class Hub(models.Model):
     locked = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag, blank=True)
     users = models.ManyToManyField(User, through='Membership', blank=True)
+    image = models.ImageField(default='default-hub.png', upload_to='hub_pics')
+
+    def save(self, **kwargs):
+        super().save()
+        img = Image.open(self.image.path)
+
+        target_width = 346
+        target_height = 216
+
+        if img.height > target_height or img.width > target_width:
+            size = (target_width, target_height)
+            img.thumbnail(size, Image.ANTIALIAS)
+            img.save(self.image.path)
 
 
 class Activity(models.Model):
@@ -31,6 +45,20 @@ class Activity(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     finish_date = models.DateTimeField(default=one_day_hence())
+    image = models.ImageField(default='default-activity.png', upload_to='activity_pics')
+
+    def save(self, **kwargs):
+        super().save()
+        img = Image.open(self.image.path)
+
+        target_width = 346
+        target_height = 216
+
+        if img.height > target_height or img.width > target_width:
+            size = (target_width, target_height)
+            img.thumbnail(size, Image.ANTIALIAS)
+            img.save(self.image.path)
+
 
 
 class Room(models.Model):

@@ -27,6 +27,9 @@ class HubCreateView(LoginRequiredMixin, CreateView):
     model = Hub
     fields = ['name', 'description', 'locked', 'tags']
 
+    def get_success_url():
+        return reverse("bunchup-home")
+
     def form_valid(self, form):
         self.object = form.save()
         Membership.objects.create(
