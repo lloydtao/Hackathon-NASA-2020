@@ -16,7 +16,7 @@ class Activity(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
     room = models.OneToOneField('Room', on_delete=models.CASCADE, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     finish_date = models.DateTimeField(default=one_day_hence())
 
@@ -27,7 +27,7 @@ class Hub(models.Model):
     locked = models.BooleanField(default=False)
     tags = models.ManyToManyField(Tag, blank=True)
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, null=True, blank=True)
-    users = models.ManyToManyField(User, through='Membership', null=True, blank=True)
+    users = models.ManyToManyField(User, through='Membership', blank=True)
 
 
 class Room(models.Model):
