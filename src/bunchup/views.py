@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, DetailView
-from .models import Hub
+from django.views.generic import ListView, DetailView, CreateView
+from .models import Hub, Activity
 
 class HomeView(ListView):
     model = Hub
