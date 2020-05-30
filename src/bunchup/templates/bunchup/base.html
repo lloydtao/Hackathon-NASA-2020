@@ -9,67 +9,62 @@
 		<title>Bunchup</title>
 	
 		<!-- Favicons -->
+		{% comment %} <link rel="icon" href="{% static 'bunchup/img/favicons/GingerbreadElephant.png' %}"> {% endcomment %}
+
 		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon.ico' %}">
 		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon-32x32.png' %}" sizes="32x32" type="image/png">
 		<link rel="icon" href="{% static 'bunchup/img/favicons/favicon-16x16.png' %}" sizes="16x16" type="image/png">
 		<link rel="apple-touch-icon" href="{% static 'bunchup/img/favicons/apple-touch-icon.png' %}" sizes="180x180">
-		
-		<meta name="theme-color" content="#202020">
+
+		<meta name="theme-color" content="#F88859">
 	
 		<!-- Bootstrap CSS and Stylesheets -->
 		<link rel="stylesheet" href="{% static 'bunchup/bootstrap/bootstrap.css' %}">
 		<link rel="stylesheet" href="{% static 'bunchup/css/main.css' %}">
 		<link rel="stylesheet" href="{% static 'bunchup/css/font%20awesome-free-5.11.2-all.css' %}">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+
+        <link rel="stylesheet" href="{% static 'bunchup/css/bunchup.css' %}">
 	</head>
 	<body>
-		<header class="site-header">
-			<nav class="navbar navbar-expand-md navbar-dark header-dark fixed-top">
+		<header class="site-header py-1">
+			<nav class="navbar navbar-expand-md fixed-top bg-white navbar-shadow">
 				<div class="container">
-					<a class="navbar-brand mr-4" href="{% url 'bunchup-home' %}">Bunch Up</a>
-					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-					</button>
-					<div class="collapse navbar-collapse" id="navbarToggle">
-						<div class="navbar-nav mr-auto">
-							<a class="nav-item nav-link" href="{% url 'bunchup-home' %}">Home</a>
-						</div>
-						<!-- Navbar Right Side -->
-						{% if user.is_authenticated %}
-						<div class="navbar-nav">
-							<a class="nav-item nav-link" href="{% url 'profile' %}">{{ user.username }}</a>
-							<a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
-						</div>
-						{% else %}
-						<div class="navbar-nav">
-							<a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
-							<a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-						</div>
-						{% endif %}
-					</div>
+                    <a class="mx-auto" href="{% url 'bunchup-home' %}">
+                        <img class="nav-elephant-logo" src="{% static 'bunchup/img/logo.png' %}"></img>
+                    </a>
+
+                    <!-- Navbar Right Side -->
+                    {% if user.is_authenticated %}
+                    <div>
+                        <a class="no-text-dec" href="{% url 'profile' %}">
+                            <img class="peng-profile-image mr-3" src="{{ user.profile.image.url }}"></img>
+                            <h2 class="d-inline text-heebo">
+                                {{ user.username }}
+                            </h2>
+                        </a>
+                        <a class="mx-2" href="{% url 'logout' %}">
+                            {% comment %} <object data="{% static 'bunchup/img/arrow-down.svg' %}" type="image/svg+xml"></object> {% endcomment %}
+                            <img src="{% static 'bunchup/img/arrow-down.svg' %}"></img>
+                        </a>
+                    </div>
+                    {% else %}
+                    <div>
+                        <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+                    </div>
+                    {% endif %}
 				</div>
 			</nav>
 		</header>
-		<main role="main" class="container">
-			{% comment %} <div class="row"> {% endcomment %}
-				{% comment %} <div class="col-md-8"> {% endcomment %}
-					{% if messages %}
-						{% for message in messages %}
-							<div class="alert alert-{{ message.tags }}">{{ message }}</div>
-						{% endfor %}
-					{% endif %}
-					{% block content %}{% endblock %}
-				{% comment %} </div> {% endcomment %}
-				{% comment %} <div class="col-md-4">
-					<div class="content-section py-4">
-                        <ul class="list-group">
-                            <li class="list-group-item list-group-item-light">Latest Activities</li>
-                            <li class="list-group-item list-group-item-light">Announcements</li>
-                            <li class="list-group-item list-group-item-light">Calendars</li>
-                        </ul>
-					</div>
-				</div> {% endcomment %}
-			{% comment %} </div> {% endcomment %}
+		<main role="main" class="container-fluid">
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+
+            {% block content %}{% endblock %}
 		</main>
 	
 		<!-- Optional JavaScript -->
