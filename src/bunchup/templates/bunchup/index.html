@@ -10,7 +10,7 @@
 					<small class="text-muted">{{ hub.activity }}</small>
 					<small class="text-muted">{{ hub.users }}</small>
 				</div>
-				<h2><a class="article-title" href="{% url 'bunchup-hub' hub.name %}">{{ hub.name }}</a></h2>
+				<h2><a class="article-title" href="{% url 'bunchup-hub' hub.id %}">{{ hub.name }}</a></h2>
 				<p class="article-content">{{ hub.description }}</p>
 			</div>
 		</article>
