@@ -10,6 +10,17 @@ class HomeView(ListView):
 
 class HubView(DetailView):
     model = Hub
+    
+    def get_context_data(self, **kwargs):
+        context = super(HubView, self).get_context_data(**kwargs)
+        hub = self.get_object()
+        members = hub.membership_set.filter()
+        admins = []
+        for member in members:
+            if member.is_admin:
+                admins.append(member.user)
+        context['admins'] = admins
+        return context
 
 class HubCreateView(LoginRequiredMixin, CreateView):
     model = Hub
