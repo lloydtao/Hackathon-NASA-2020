@@ -26,4 +26,4 @@ class ActivityView(DetailView):
 class ActivityCreateView(LoginRequiredMixin, CreateView):
     model = Activity
     context_object_name = 'activities'
-    fields = ['name', 'description']
+    fields = ['name', 'description', 'start_date', 'finish_date']
