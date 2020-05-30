@@ -46,3 +46,11 @@ ul {
 .account-heading {
   font-size: 2.5rem;
 }
+
+.asteriskField {
+    display: none;
+}
+
+.cute-container {
+    max-width: 600px;
+}

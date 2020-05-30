@@ -51,29 +51,25 @@
 			</nav>
 		</header>
 		<main role="main" class="container">
-			<div class="row">
-				<div class="col-md-8">
+			{% comment %} <div class="row"> {% endcomment %}
+				{% comment %} <div class="col-md-8"> {% endcomment %}
 					{% if messages %}
 						{% for message in messages %}
 							<div class="alert alert-{{ message.tags }}">{{ message }}</div>
 						{% endfor %}
 					{% endif %}
 					{% block content %}{% endblock %}
-				</div>
-				<div class="col-md-4">
-					<div class="content-section">
-						<h3>Sidebar</h3>
-						<p class='text-muted'>Extra links here, such as:
-							<ul class="list-group">
-								<li class="list-group-item list-group-item-light">Latest Activities</li>
-								<li class="list-group-item list-group-item-light">Announcements</li>
-								<li class="list-group-item list-group-item-light">Calendars</li>
-								<li class="list-group-item list-group-item-light">etc</li>
-							</ul>
-						</p>
+				{% comment %} </div> {% endcomment %}
+				{% comment %} <div class="col-md-4">
+					<div class="content-section py-4">
+                        <ul class="list-group">
+                            <li class="list-group-item list-group-item-light">Latest Activities</li>
+                            <li class="list-group-item list-group-item-light">Announcements</li>
+                            <li class="list-group-item list-group-item-light">Calendars</li>
+                        </ul>
 					</div>
-				</div>
-			</div>
+				</div> {% endcomment %}
+			{% comment %} </div> {% endcomment %}
 		</main>
 	
 		<!-- Optional JavaScript -->
