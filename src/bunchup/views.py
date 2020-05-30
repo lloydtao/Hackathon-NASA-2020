@@ -15,7 +15,6 @@ class HubView(DetailView):
     
 class HubCreateView(LoginRequiredMixin, CreateView):
     model = Hub
-    template_name = 'bunchup/hub_create.html'
     context_object_name = 'hubs'
     fields = ['name', 'description', 'locked', 'tags']
     
@@ -26,6 +25,5 @@ class ActivityView(DetailView):
     
 class ActivityCreateView(LoginRequiredMixin, CreateView):
     model = Activity
-    template_name = 'bunchup/activity_create.html'
     context_object_name = 'activities'
     fields = ['name', 'description']
