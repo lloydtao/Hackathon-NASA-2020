@@ -6,11 +6,12 @@
 			<img class="rounded-circle article-img" src="{{ hub.author.profile.image.url }}">
 			<div class="media-body">
 				<div class="article-metadata">
-					<a class="mr-2" href="{% url 'user-hubs' hub.author.username %}">{{ hub.author }}</a>
-					<small class="text-muted">{{ hub.date|date:"d-M-Y" }}</small>
+					<a class="mr-2" href="#">{{ hub.tags }}</a>
+					<small class="text-muted">{{ hub.activity }}</small>
+					<small class="text-muted">{{ hub.users }}</small>
 				</div>
-				<h2><a class="article-title" href="{% url 'hub-detail' hub.id %}">{{ hub.title }}</a></h2>
-				<p class="article-content">{{ hub.content }}</p>
+				<h2><a class="article-title" href="{% url 'bunchup-hub' hub.id %}">{{ hub.name }}</a></h2>
+				<p class="article-content">{{ hub.description }}</p>
 			</div>
 		</article>
 	{% endfor %}
