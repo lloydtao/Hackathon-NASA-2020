@@ -11,20 +11,21 @@
         </div>
       </section>
 	  
+	<h1>Featured</h1>
+    <div class="row">
 	{% for hub in hubs %}
-		<article class="media content-section">
-			<img class="rounded-circle article-img" src="{{ hub.author.profile.image.url }}">
-			<div class="media-body">
-				<div class="article-metadata">
-					<a class="mr-2" href="#">{{ hub.tags }}</a>
-					<small class="text-muted">{{ hub.activity }}</small>
-					<small class="text-muted">{{ hub.users }}</small>
-				</div>
-				<h2><a class="article-title" href="{% url 'bunchup-hub' hub.id %}">{{ hub.name }}</a></h2>
-				<p class="article-content">{{ hub.description }}</p>
-			</div>
-		</article>
+      <div class="col-md-3">
+        <div class="card mb-3 box-shadow">
+          <img class="card-img-top" src="https://res.cloudinary.com/practicaldev/image/fetch/s--5nUdclIu--/c_imagga_scale,f_auto,fl_progressive,h_900,q_auto,w_1600/https://dev-to-uploads.s3.amazonaws.com/i/cxd5jculpfpuyuo5a81r.jpg" alt="Card image cap">
+          <div class="card-body">
+		  <h4>{{ hub.name }}</h4>
+            <small class="card-text">{{ hub.description }}</small>
+          </div>
+        </div>
+      </div>
 	{% endfor %}
+	</div>
+	
 	{% if is_paginated %}
 	
 		{% if page_obj.has_previous %}
