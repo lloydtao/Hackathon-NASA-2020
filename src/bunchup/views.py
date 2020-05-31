@@ -177,7 +177,6 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return False
 
 
-
 class ActivityJoinView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         activity = Activity.objects.get(pk=kwargs['pk'])
@@ -208,3 +207,22 @@ class ActivityLeaveView(LoginRequiredMixin, View):
         activity.users.remove(self.request.user)
         activity.save()
         return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(activity.pk)}))
+
+
+class RoomCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Room
+    context_object_name = 'rooms'
+    fields = ['name', 'description']
+
+    def form_valid(self, form):
+        self.object = form.save()
+        pk = self.kwargs['pk']
+        self.object.hub = Hub.objects.get(pk=pk)
+        return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(self.object.pk)}))
+
+    def test_func(self):
+        hub = Hub.objects.get(pk=self.kwargs['pk'])
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
