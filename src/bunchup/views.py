@@ -231,7 +231,7 @@ class RoomCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         pk = self.kwargs['pk']
         self.object.hub = Hub.objects.get(pk=pk)
         self.object.save()
-        return HttpResponseRedirect(reverse_lazy("bunchup-room", kwargs={"pk": str(self.object.pk)}))
+        return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(pk)}))
 
     def test_func(self):
         hub = Hub.objects.get(pk=self.kwargs['pk'])
@@ -248,7 +248,8 @@ class RoomUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        return HttpResponseRedirect(reverse_lazy("bunchup-room", kwargs={"pk": str(self.object.pk)}))
+        pk = self.object.hub.pk
+        return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(pk)}))
 
     def test_func(self):
         hub = self.get_object().hub
