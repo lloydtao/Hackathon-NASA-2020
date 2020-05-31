@@ -2,7 +2,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Hub, Activity, Membership, Room
 from .forms import ImageUploadForm
 
@@ -57,12 +57,13 @@ class HubCreateView(LoginRequiredMixin, CreateView):
         )
         return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(self.object.pk)}))
 
+
 class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Hub
     form_class = ImageUploadForm
     context_object_name = 'hubs'
     template_name = 'bunchup/hub_update.html'
-    
+
     def test_func(self):
         hub = self.get_object()
         if hub.membership_set.filter(user=self.request.user).exists():
@@ -149,3 +150,35 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return hub.membership_set.get(user=self.request.user).is_admin
         else:
             return False
+
+
+class ActivityJoinView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        activity = Activity.objects.get(pk=kwargs['pk'])
+        activity.users.add(self.request.user)
+        activity.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(activity.pk)}))
+
+
+class HubJoinView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        hub = Hub.objects.get(pk=kwargs['pk'])
+        hub.users.add(self.request.user)
+        hub.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(hub.pk)}))
+
+
+class HubLeaveView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        hub = Hub.objects.get(pk=kwargs['pk'])
+        hub.users.remove(self.request.user)
+        hub.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(hub.pk)}))
+
+
+class ActivityLeaveView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        activity = Activity.objects.get(pk=kwargs['pk'])
+        activity.users.remove(self.request.user)
+        activity.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(activity.pk)}))
