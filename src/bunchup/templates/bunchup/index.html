@@ -16,17 +16,17 @@
       </div>
     </section>
 	
-	<h1>Featured</h1>
+	<h1 class="mb-4">Featured</h1>
 
     <div class="row">
         {% for hub in hubs %}
 
-        <a class="d-block-inline col-md-4 no-text-dec" href="{% url 'bunchup-hub' hub.id %}">
-            <div class="card mb-4 box-shadow">
+        <a class="d-block-inline col-md-4 no-text-dec mb-4" href="{% url 'bunchup-hub' hub.id %}">
+            <div class="card box-shadow">
                 <img class="card-img-top" src="{{ hub.image.url }}" alt="Card image cap">
-                <div class="card-body">
-                <h4>{{ hub.name }}</h4>
-                <small class="card-text">{{ hub.description }}</small>
+                <div class="card-body px-3 py-2">
+                    <h4>{{ hub.name }}</h4>
+                    <small class="card-text">{{ hub.description }}</small>
                 </div>
             </div>
         </a>
