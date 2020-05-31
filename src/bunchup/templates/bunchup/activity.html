@@ -18,7 +18,7 @@
     <script>
         function addMessage(message) {
             let chatLog = document.querySelector('#chat-log');
-            chatLog.value += (message.text + '\n');
+            chatLog.value += `${message.owner}: ${message.text}\n`;
             chatLog.scrollTop = chatLog.scrollHeight;
         }
 
@@ -60,7 +60,7 @@
 
         {% for chat_message in chat_messages %}
             addMessage(JSON.parse(
-                "{ \"text\": \"{{ chat_message.owner }}: {{ chat_message.text }}\" }"
+                "{ \"text\": \"{{ chat_message.text }}\", \"owner\": \"{{ chat_message.owner.username }}\" }"
             ));
         {% endfor %}
     </script>

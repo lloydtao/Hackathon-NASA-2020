@@ -46,5 +46,6 @@ class ChatConsumer(WebsocketConsumer):
 def react_new_message(sender, instance, **kwargs):
     for identity, channel in ChatConsumer.channels.items():
         channel.send(text_data=json.dumps({
-            "text": instance.text
+            "text": instance.text,
+            "owner": instance.owner.username
         }))
