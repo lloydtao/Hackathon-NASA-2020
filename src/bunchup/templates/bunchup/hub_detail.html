@@ -56,6 +56,7 @@
 			</div>
 		</div>
 	</div>
+	{% if next_activity %}
 	<div class="content-section mx-auto">
 		<h2>Upcoming Activities</h2>
 		<div class="row">
@@ -72,6 +73,7 @@
 			{% endfor %}
 		</div>
 	</div>
+	{% endif %}
 		<div class="media content-section cute-container mx-auto">
 			<div class="media-body">
 			{% if user in admins %}
