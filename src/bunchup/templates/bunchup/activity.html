@@ -24,12 +24,12 @@
 		</div>
 		<div class="col-md-3">
 			<div class="media-body content-section mx-auto">
-				<h2>Controls</h2>
+				{% comment %} <h2>Controls</h2> {% endcomment %}
 				<div>
-					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-activity-join' activity.id %}">Join</a>
+					<a class="btn btn-secondary mt-1 mb-1" href="{% url 'bunchup-activity-join' activity.id %}">Join</a>
 				</div>
 				<div>
-					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-activity-leave' activity.id %}">Leave</a>
+					<a class="btn btn-secondary mt-1 mb-1" href="{% url 'bunchup-activity-leave' activity.id %}">Leave</a>
 				</div>
 				{% if user in admins %}
 				<hr>
