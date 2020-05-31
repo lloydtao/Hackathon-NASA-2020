@@ -1,6 +1,7 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Hub, Activity, Membership
 
@@ -34,7 +35,7 @@ class HubCreateView(LoginRequiredMixin, CreateView):
             hub=self.object,
             is_admin=True
         )
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(self.object.pk)}))
 
 class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Hub
@@ -83,7 +84,7 @@ class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         self.object.hub = Hub.objects.get(pk=pk)
         self.object.users.add(self.request.user)
         self.object.save()
-        return HttpResponseRedirect("/activity/"+str(self.object.pk))
+        return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(self.object.pk)}))
 
     def test_func(self):
         hub = Hub.objects.get(pk=self.kwargs['pk'])
@@ -93,3 +94,27 @@ class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
             return False
 
 
+class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Activity
+    success_url = "/"
+
+    def test_func(self):
+        hub = self.object.hub
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
+
+
+class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Hub
+    context_object_name = 'hubs'
+    template_name = 'bunchup/activity_update.html'
+    fields = ['name', 'description', 'tags', 'start_date', 'finish_date', 'image']
+
+    def test_func(self):
+        hub = self.get_object()
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
