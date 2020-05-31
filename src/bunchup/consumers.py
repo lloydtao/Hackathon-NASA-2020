@@ -30,6 +30,10 @@ class ChatConsumer(WebsocketConsumer):
     def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json["message"]
+
+        if message.strip() == "":
+            return
+
         activity = text_data_json["activity"]
 
         room = Activity.objects.get(id=activity).room
@@ -47,5 +51,6 @@ def react_new_message(sender, instance, **kwargs):
     for identity, channel in ChatConsumer.channels.items():
         channel.send(text_data=json.dumps({
             "text": instance.text,
-            "owner": instance.owner.username
+            "owner": instance.owner.username,
+            "picture": instance.owner.profile.image.url
         }))

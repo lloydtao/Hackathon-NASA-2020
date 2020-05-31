@@ -94,3 +94,30 @@ background-size: cover;
 .card-img-top {
     height: 170px;
 }
+
+/* Chat Styles */
+
+.chat-message {
+    max-width: 70%;
+    word-wrap: break-word;
+}
+
+.chat-profile-icon {
+    max-width: 48px;
+    max-height: 48px;
+}
+
+#chat-log {
+    height: 40vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+#chat-message-submit {
+    max-width: 37px;
+    max-height: 37px;
+}
+
+#chat-message-entry {
+    max-width: 95%;
+}

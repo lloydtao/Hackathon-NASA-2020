@@ -1,4 +1,5 @@
 {% extends "bunchup/base.html" %}
+{% load static %}
 
 {% block content %}
 	<div class="row">
@@ -15,10 +16,21 @@
 			<div class="media content-section mx-auto">
 				<img class="rounded-circle article-img" src="{{ hub.image.url }}">
 				<div class="media-body">
-				<h2>Chat Room</h2>
-					<textarea class="form-control" rows=20 id="chat-log"></textarea><br>
-					<input id="chat-message-input" type="text"><br>
-					<input id="chat-message-submit" type="button" value="Send">
+                    <h2>Chat Room</h2>
+                    
+					{% comment %} <textarea class="form-control" rows=20 id="chat-log"></textarea><br> {% endcomment %}
+                    <div class="form-control" id="chat-log"></div>
+
+                    <div class="row mt-2 no-gutters">
+                        <div id="chat-message-entry" class="col">
+                            <input class="form-control bg-light" id="chat-message-input" type="text" placeholder="Type a message..."><br>
+                        </div>
+                        <div id="chat-message-submit" class="col bg-primary rounded pl-1 pt-1 ml-2">
+
+                            {% comment %} <input class="form-control" id="chat-message-submit" type="button" value="Send"> {% endcomment %}
+                            <img src="{% static 'bunchup/img/send.svg' %}"></img>
+                        </div>
+                    </div>
 				</div>
 			</div>
 		</div>
@@ -57,10 +69,65 @@
 
     {{ activity.id|json_script:"activity-id" }}
     <script>
-        function addMessage(message) {
-            let chatLog = document.querySelector('#chat-log');
-            chatLog.value += `${message.owner}: ${message.text}\n`;
+        let chatLog = document.querySelector("#chat-log");
+
+        function scrollChatToBottom() {
             chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        function addMessage(message) {
+            let rootRow = document.createElement("div");
+
+            let nameRow = document.createElement("div");
+            nameRow.className = "row ml-1";
+
+            let nameRowSpace = document.createElement("div");
+            nameRowSpace.className = "col chat-profile-icon";
+
+            nameRow.appendChild(nameRowSpace);
+
+            let name = document.createElement("div");
+            name.className="col"
+            name.textContent = message.owner;
+            
+            nameRow.appendChild(name);
+
+            //
+
+            let chatMessage = document.createElement("div");
+            chatMessage.className = "d-inline-block bg-light rounded chat-message py-2 px-3 ml-2";
+            chatMessage.textContent = message.text;
+
+            let messageContainer = document.createElement("div");
+            messageContainer.className = "col";
+
+            messageContainer.appendChild(chatMessage);
+
+            let chatProfileImage = document.createElement("img");
+            chatProfileImage.className = "d-inline rounded-circle chat-profile-icon";
+
+            console.log(message.picture);
+            chatProfileImage.src = message.picture;
+
+            let imageContainer = document.createElement("div");
+            imageContainer.className = "col chat-profile-icon";
+
+            imageContainer.appendChild(chatProfileImage);
+
+            let row = document.createElement("div");
+            row.className = "row mb-2";
+
+            row.appendChild(imageContainer);
+            row.appendChild(messageContainer);
+
+            //
+
+            rootRow.appendChild(nameRow)
+            rootRow.appendChild(row);
+
+            chatLog.appendChild(rootRow);
+
+            scrollChatToBottom();
         }
 
         const activityId = JSON.parse(document.getElementById("activity-id").textContent);
@@ -101,9 +168,13 @@
 
         {% for chat_message in chat_messages %}
             addMessage(JSON.parse(
-                "{ \"text\": \"{{ chat_message.text }}\", \"owner\": \"{{ chat_message.owner.username }}\" }"
+                "{ \"text\": \"{{ chat_message.text }}\", \"owner\": \"{{ chat_message.owner.username }}\", \"picture\": \"{{ chat_message.owner.profile.image.url }}\" }"
             ));
         {% endfor %}
+
+        setTimeout(() => {
+            scrollChatToBottom();
+        }, 100);
     </script>
 
 
