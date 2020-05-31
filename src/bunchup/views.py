@@ -63,6 +63,7 @@ class HubView(DetailView):
                 admins.append(member.user)
         context['activities'] = Activity.objects.filter(hub=self.kwargs.get('pk'))
         context['next_activity'] = context['activities'][0] if context['activities'] else None
+        context['users'] = users
         context['admins'] = admins
         return context
 
