@@ -55,9 +55,13 @@ class HubView(DetailView):
         hub = self.get_object()
         members = hub.membership_set.filter()
         admins = []
+        users = []
         for member in members:
+            users.append(member.user)
             if member.is_admin:
                 admins.append(member.user)
+        context['activities'] = Activity.objects.filter(hub=self.kwargs.get('pk'))
+        context['next_activity'] = context['activities'][0] if context['activities'] else None
         context['admins'] = admins
         return context
 
@@ -72,6 +76,11 @@ class HubCreateView(LoginRequiredMixin, CreateView):
             hub=self.object,
             is_admin=True
         )
+        general_room = Room(name="General",
+                            description="A general room to discuss anything.",
+                            hub=self.object,
+                            activity_room=False)
+        general_room.save()
         return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(self.object.pk)}))
 
 
@@ -177,7 +186,6 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return False
 
 
-
 class ActivityJoinView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         activity = Activity.objects.get(pk=kwargs['pk'])
@@ -208,3 +216,53 @@ class ActivityLeaveView(LoginRequiredMixin, View):
         activity.users.remove(self.request.user)
         activity.save()
         return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(activity.pk)}))
+
+
+class RoomCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Room
+    context_object_name = 'rooms'
+    fields = ['name', 'description']
+
+    def form_valid(self, form):
+        self.object = form.save()
+        pk = self.kwargs['pk']
+        self.object.hub = Hub.objects.get(pk=pk)
+        self.object.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-room", kwargs={"pk": str(self.object.pk)}))
+
+    def test_func(self):
+        hub = Hub.objects.get(pk=self.kwargs['pk'])
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
+
+
+class RoomUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Room
+    context_object_name = 'rooms'
+    fields = ['name', 'description']
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-room", kwargs={"pk": str(self.object.pk)}))
+
+    def test_func(self):
+        hub = self.get_object().hub
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
+
+
+class RoomDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Room
+    success_url = '/'
+
+    def test_func(self):
+        hub = self.get_object().hub
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
+
