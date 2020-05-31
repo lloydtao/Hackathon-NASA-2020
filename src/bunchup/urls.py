@@ -8,5 +8,5 @@ urlpatterns = [
     path('hub/<int:pk>/delete/', HubDeleteView.as_view(), name='bunchup-hub-delete'),
     path('activity/<int:pk>/', ActivityView.as_view(), name='bunchup-activity'),
     path('create/hub/', HubCreateView.as_view(), name='bunchup-hub-create'),
-    path('create/activity/', ActivityCreateView.as_view(), name='bunchup-activity-create'),
+    path('hub/<int:pk>/create/activity/', ActivityCreateView.as_view(), name='bunchup-activity-create'),
 ]

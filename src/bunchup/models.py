@@ -35,11 +35,14 @@ class Hub(models.Model):
             img.thumbnail(size, Image.ANTIALIAS)
             img.save(self.image.path)
 
+    def __str__(self):
+        return self.name
+
 
 class Activity(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
-    hub = models.ForeignKey(Hub, on_delete=models.CASCADE, null=False)
+    hub = models.ForeignKey(Hub, on_delete=models.CASCADE, null=True)
     room = models.OneToOneField('Room', on_delete=models.CASCADE, null=True, blank=True)
     tags = models.ManyToManyField(Tag, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
@@ -59,12 +62,18 @@ class Activity(models.Model):
             img.save(self.image.path)
 
 
+    def __str__(self):
+        return self.name
+
 
 class Room(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
     hub = models.ForeignKey(Hub, on_delete=models.CASCADE)
     activity_room = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.name
 
 
 class Message(models.Model):
@@ -73,6 +82,9 @@ class Message(models.Model):
     owner = models.ForeignKey(User, on_delete=models.SET(0))
     date_time = models.DateTimeField(auto_now_add=True)
     room = models.ForeignKey(Room, related_name="messages", on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.text
 
 
 class Membership(models.Model):
