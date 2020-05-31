@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Hub, Activity, Membership, Room
+from .forms import ImageUploadForm
 
 class HomeView(ListView):
     model = Hub
