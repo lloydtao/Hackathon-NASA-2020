@@ -1,21 +1,102 @@
 {% extends "bunchup/base.html" %}
 
 {% block content %}
-		<div class="media content-section cute-container mx-auto">
-			<img class="rounded-circle article-img" src="{{ hub.image.url }}">
-			<div class="media-body">
-				<div class="article-metadata">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="media content-section mx-auto">
+				
+				<div class="media-body">
+					<h2><img class="rounded-circle hub-icon" src="{{ hub.image.url }}"> {{ hub.name }}</h2>
+					<p>Hosted by{% for admin in admins %} {{ admin.username }} <img class="rounded-circle hub-icon" src="{{ admin.profile.image.url }}">{% endfor %} Users: {{ hub.total_users }} 999</p>
+					<hr>
+					<p>{{ hub.description }}</p>
+					<div>
+						<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-join' hub.id %}">Join Hub</a>
+						<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-leave' hub.id %}">Leave Hub</a>
+					</div>
 				</div>
-				<h2 class="article-title">{{ hub.name }}</h2>
-				<p class="article-content">{{ hub.description }}</p>
-				{% if user in admins %}
-				<hr>
-				<p class="article-title">Admin Controls</p>
+			</div>
+		</div>
+		<div class="col-md-12">
+			<div class="media-body cute-container content-section mx-auto">
+				<h2>Next Activity</h2>
+				<a href="/hub/16/">
+					<div class="card box-shadow">
+						<img class="card-img-top" src="/media/hub_pics/thumbnail.png" alt="Card image cap">
+						<div class="card-body px-3 py-2">
+							<h4>Skribbl Weekly</h4>
+							<small class="card-text">Come and join us for weekly games on skribbl.io, every Friday at 9pm!</small>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-3">
+			<div class="media content-section mx-auto">
+				<div class="media-body">
+				<h2>Channels</h2>
+					<p>Channel 1</p>
+					<p>Channel 2</p>
+					<p>Channel 3</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="media content-section mx-auto">
+				<div class="media-body">
+				<h2>Chat Room</h2>
+					<textarea class="form-control" rows=20 id="chat-log"></textarea><br>
+					<input id="chat-message-input" type="text"><br>
+					<input id="chat-message-submit" type="button" value="Send">
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="content-section mx-auto">
+		<h2>Upcoming Activities</h2>
+		<div class="row">
+			<a class="d-block-inline col-md-4 no-text-dec mb-4" href="/hub/16/">
+			
+				<div class="card box-shadow">
+					<img class="card-img-top" src="/media/hub_pics/thumbnail.png" alt="Card image cap">
+					<div class="card-body px-3 py-2">
+						<h4>Skribbl Weekly</h4>
+						<small class="card-text">Come and join us for weekly games on skribbl.io, every Friday at 9pm!</small>
+					</div>
+				</div>
+			</a>
+			<a class="d-block-inline col-md-4 no-text-dec mb-4" href="/hub/20/">
+			
+				<div class="card box-shadow">
+					<img class="card-img-top" src="/media/hub_pics/unnamed.png" alt="Card image cap">
+					<div class="card-body px-3 py-2">
+						<h4>Minecraft Community</h4>
+						<small class="card-text">Hop on our Minecraft survival, factions and minigame servers.</small>
+					</div>
+				</div>
+			</a>
+			<a class="d-block-inline col-md-4 no-text-dec mb-4" href="/hub/21/">
+				<div class="card box-shadow">
+					<img class="card-img-top" src="/media/hub_pics/writing.jpg" alt="Card image cap">
+					<div class="card-body px-3 py-2">
+						<h4>Group Writing</h4>
+						<small class="card-text">We're a friendly community of online collaborative story writers. Come and join!</small>
+					</div>
+				</div>
+			</a>
+		</div>
+	</div>
+		<div class="media content-section cute-container mx-auto">
+			<div class="media-body">
+			{% if user in admins %}
+				<h2 class="article-title">Admin Controls</h2>
 				<div>
 					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-update' hub.id %}">Update</a>
 					<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-delete' hub.id %}">Delete</a>
 				</div>
 				{% endif %}
 			</div>
-		</article>
+		</div>
 {% endblock content %}
