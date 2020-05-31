@@ -73,14 +73,24 @@ class ActivityView(DetailView):
         return context
 
 
-class ActivityCreateView(LoginRequiredMixin, CreateView):
+class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Activity
     context_object_name = 'activities'
     fields = ['name', 'description', 'start_date', 'finish_date']
 
     def form_valid(self, form):
         self.object = form.save()
-        print(self.kwargs)
-        self.object.hub = Hub.objects.get(pk=self.kwargs['pk'])
+        pk = self.kwargs['pk']
+        self.object.hub = Hub.objects.get(pk=pk)
+        self.object.users.add(self.request.user)
         self.object.save()
-        return HttpResponseRedirect(self.get_success_url())
+        return HttpResponseRedirect("/activity/"+str(self.object.pk))
+
+    def test_func(self):
+        hub = Hub.objects.get(pk=self.kwargs['pk'])
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
+
+
