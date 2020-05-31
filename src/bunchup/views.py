@@ -159,12 +159,6 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         else:
             return False
 
-    def test_func(self):
-        hub = self.get_object()
-        if hub.membership_set.filter(user=self.request.user).exists():
-            return hub.membership_set.get(user=self.request.user).is_admin
-        else:
-            return False
 
 
 class ActivityJoinView(LoginRequiredMixin, View):
