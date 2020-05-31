@@ -3,26 +3,35 @@
 {% block content %}
     <section class="jumbotron text-center">
       <div class="container">
-        <h1 class="jumbotron-heading">Welcome!</h1>
-        <h3 class="lead">Bunchup makes it super easy to find people to play with.</h3>
-        <p>
-          <a href="#" class="btn btn-bunchup my-2">Join Bunchup</a>
-        </p>
+        {% if user %}
+            <h1 class="jumbotron-heading">Hello! 👋</h1>
+            <h3 class="lead">Browse some of the activities going on today.</h3>
+        {% else %}
+            <h1 class="jumbotron-heading">Welcome!</h1>
+            <h3 class="lead">Bunchup makes it super easy to find people to play with.</h3>
+            <p>
+                <a href="#" class="btn btn-bunchup my-2">Join Bunchup</a>
+            </p>
+        {% endif %}
       </div>
     </section>
 	
 	<h1>Featured</h1>
+
     <div class="row">
-			{% for hub in hubs %}
-        <div class="col-md-4">
-          <div class="card mb-4 box-shadow">
-            <img class="card-img-top" src="{{ hub.image.url }}" alt="Card image cap">
-            <div class="card-body">
-	  	      <h4><a href="{% url 'bunchup-hub' hub.id %}">{{ hub.name }}</a></h4>
-              <small class="card-text">{{ hub.description }}</small>
+        {% for hub in hubs %}
+
+        <a class="d-block-inline col-md-4 no-text-dec" href="{% url 'bunchup-hub' hub.id %}">
+            <div class="card mb-4 box-shadow">
+                <img class="card-img-top" src="{{ hub.image.url }}" alt="Card image cap">
+                <div class="card-body">
+                <h4>{{ hub.name }}</h4>
+                <small class="card-text">{{ hub.description }}</small>
+                </div>
             </div>
-          </div>
-        </div>
-	  {% endfor %}
+        </a>
+
+        {% endfor %}
 	</div>
+    
 {% endblock content %}

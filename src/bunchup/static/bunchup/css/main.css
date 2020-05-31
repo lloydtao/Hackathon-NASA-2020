@@ -80,3 +80,7 @@ background-size: cover;
 .jumbotron h1, .jumbotron h3 {
 	color: #eee;
 }
+
+.no-text-dec {
+    text-decoration: none;
+}
