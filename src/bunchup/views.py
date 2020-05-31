@@ -11,6 +11,25 @@ class HomeView(ListView):
     template_name = 'bunchup/index.html'
     context_object_name = 'hubs'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["highlights"] = {}
+
+        featured = Hub.objects.all()
+        context["highlights"]["Featured"] = featured
+
+        minecraft_activities = Activity.objects.filter(tags__title__contains="minecraft")
+        context["highlights"]["Minecraft"] = minecraft_activities
+
+        skribbl_activities = Activity.objects.filter(tags__title__contains="skribbl.io")
+        context["highlights"]["Skribbl.io"] = skribbl_activities
+
+        activities = Activity.objects.all()
+        context["highlights"]["Activities"] = activities
+
+        return context
+    
+
 class HubView(DetailView):
     model = Hub
     

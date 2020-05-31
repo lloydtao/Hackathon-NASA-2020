@@ -15,23 +15,28 @@
         {% endif %}
       </div>
     </section>
-	
-	<h1 class="mb-4">Featured</h1>
 
+    {% for highlight_name, highlights in highlights.items %}
+	<h1 class="mb-4">{{ highlight_name }}</h1>
     <div class="row">
-        {% for hub in hubs %}
+        {% for highlight in highlights %}
 
-        <a class="d-block-inline col-md-4 no-text-dec mb-4" href="{% url 'bunchup-hub' hub.id %}">
+        {% if highlight.hub %}
+        <a class="d-block-inline col-md-4 no-text-dec mb-4" href="{% url 'bunchup-activity' highlight.id %}">
+        {% else %}
+        <a class="d-block-inline col-md-4 no-text-dec mb-4" href="{% url 'bunchup-hub' highlight.id %}">
+        {% endif %}
             <div class="card box-shadow">
-                <img class="card-img-top" src="{{ hub.image.url }}" alt="Card image cap">
+                <img class="card-img-top" src="{{ highlight.image.url }}" alt="Card image cap">
                 <div class="card-body px-3 py-2">
-                    <h4>{{ hub.name }}</h4>
-                    <small class="card-text">{{ hub.description }}</small>
+                    <h4>{{ highlight.name }}</h4>
+                    <small class="card-text">{{ highlight.description }}</small>
                 </div>
             </div>
         </a>
 
         {% endfor %}
 	</div>
+    {% endfor %}
     
 {% endblock content %}
