@@ -18,7 +18,6 @@
 				<div class="media-body">
                     <h2>Chat Room</h2>
                     
-					{% comment %} <textarea class="form-control" rows=20 id="chat-log"></textarea><br> {% endcomment %}
                     <div class="form-control" id="chat-log"></div>
 
                     <div class="row mt-2 no-gutters">
@@ -26,8 +25,6 @@
                             <input class="form-control bg-light" id="chat-message-input" type="text" placeholder="Type a message..."><br>
                         </div>
                         <div id="chat-message-submit" class="col bg-primary rounded pl-1 pt-1 ml-2">
-
-                            {% comment %} <input class="form-control" id="chat-message-submit" type="button" value="Send"> {% endcomment %}
                             <img src="{% static 'bunchup/img/send.svg' %}"></img>
                         </div>
                     </div>
@@ -135,8 +132,8 @@
         const chatSocket = new WebSocket(
             'ws://'
             + window.location.host
-            + '/ws/activity/'
-            + activityId
+            + '/ws/room/'
+            + {{ activity.room.id }}
             + '/'
         );
 
@@ -161,7 +158,7 @@
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
                 'message': message,
-                'activity': activityId
+                'room': {{ activity.room.id }}
             }));
             messageInputDom.value = '';
         };
@@ -176,7 +173,4 @@
             scrollChatToBottom();
         }, 100);
     </script>
-
-
-
 {% endblock content %}

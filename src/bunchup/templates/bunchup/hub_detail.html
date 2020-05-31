@@ -1,4 +1,5 @@
 {% extends "bunchup/base.html" %}
+{% load static %}
 
 {% block content %}
 	<div class="row">
@@ -7,7 +8,8 @@
 				
 				<div class="media-body">
 					<h2><img class="rounded-circle hub-icon" src="{{ hub.image.url }}"> {{ hub.name }}</h2>
-					<p>Hosted by{% for admin in admins %} {{ admin.username }} <img class="rounded-circle hub-icon" src="{{ admin.profile.image.url }}">{% endfor %} Users: {{ total_users }}</p>
+					<p class="mb-1">Hosted by{% for admin in admins %} {{ admin.username }} <img class="rounded-circle hub-icon" src="{{ admin.profile.image.url }}">{% endfor %}</p>
+                    <p>Users: {{ total_users }}</p>
 					<hr>
 					<p>{{ hub.description }}</p>
 					<div>
@@ -44,21 +46,43 @@
 		<div class="col-md-3">
 			<div class="media content-section mx-auto">
 				<div class="media-body">
+
 				<h2>Channels</h2>
-					<p>Channel 1</p>
-					<p>Channel 2</p>
-					<p>Channel 3</p>
+                    {% for room in hub.room_set.all %}
+                        {% if not room.activity_room %}
+                            <div id="room-{{ room.id }}" class="p-1 rounded bg-light">
+                            {{ room }}
+                            </div>
+
+                            <script>
+                                setTimeout(() => {
+                                    $(`#room-{{ room.id }}`).click(() => {
+
+                                        changeRoomSocket({{ room.id }})
+                                        loadAllMessages({{ room.id }})
+                                    });
+                                }, 0);
+                            </script>
+                        {% endif %}
+                    {% endfor %}
 				</div>
 			</div>
 		</div>
 		<div class="col-md-9">
 			<div class="media content-section mx-auto">
 				<div class="media-body">
-				<h2>Chat Room</h2>
-					<textarea class="form-control" rows=20 id="chat-log"></textarea><br>
-					<input id="chat-message-input" type="text"><br>
-					<input id="chat-message-submit" type="button" value="Send">
-				</div>
+                <h2>Chat Room</h2>
+
+                <div class="form-control" id="chat-log"></div>
+
+                <div class="row mt-2 no-gutters">
+                    <div id="chat-message-entry" class="col">
+                        <input class="form-control bg-light" id="chat-message-input" type="text" placeholder="Type a message..."><br>
+                    </div>
+                    <div id="chat-message-submit" class="col bg-primary rounded pl-1 pt-1 ml-2">
+                        <img src="{% static 'bunchup/img/send.svg' %}"></img>
+                    </div>
+                </div>
 			</div>
 		</div>
 	</div>
@@ -91,4 +115,149 @@
 				{% endif %}
 			</div>
 		</div>
+
+    {{ hub.id|json_script:"hub-id" }}
+    <script>
+        let chatLog = document.querySelector("#chat-log");
+        var currentRoomId = {{ hub.room_set.all.0.id }};
+
+        function scrollChatToBottom() {
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        function addMessage(message) {
+            let rootRow = document.createElement("div");
+
+            let nameRow = document.createElement("div");
+            nameRow.className = "row ml-1";
+
+            let nameRowSpace = document.createElement("div");
+            nameRowSpace.className = "col chat-profile-icon";
+
+            nameRow.appendChild(nameRowSpace);
+
+            let name = document.createElement("div");
+            name.className="col"
+            name.textContent = message.owner;
+            
+            nameRow.appendChild(name);
+
+            //
+
+            let chatMessage = document.createElement("div");
+            chatMessage.className = "d-inline-block bg-light rounded chat-message py-2 px-3 ml-2";
+            chatMessage.textContent = message.text;
+
+            let messageContainer = document.createElement("div");
+            messageContainer.className = "col";
+
+            messageContainer.appendChild(chatMessage);
+
+            let chatProfileImage = document.createElement("img");
+            chatProfileImage.className = "d-inline rounded-circle chat-profile-icon";
+
+            console.log(message.picture);
+            chatProfileImage.src = message.picture;
+
+            let imageContainer = document.createElement("div");
+            imageContainer.className = "col chat-profile-icon";
+
+            imageContainer.appendChild(chatProfileImage);
+
+            let row = document.createElement("div");
+            row.className = "row mb-2";
+
+            row.appendChild(imageContainer);
+            row.appendChild(messageContainer);
+
+            //
+
+            rootRow.appendChild(nameRow)
+            rootRow.appendChild(row);
+
+            chatLog.appendChild(rootRow);
+
+            scrollChatToBottom();
+        }
+
+        const hubId = JSON.parse(document.getElementById("hub-id").textContent);
+
+        let chatSocket = new WebSocket(
+            'ws://'
+            + window.location.host
+            + '/ws/room/'
+            + currentRoomId
+            + '/'
+        );
+
+        function changeRoomSocket(roomId) {
+            // chatSocket.close();
+            chatSocket = new WebSocket(
+                'ws://'
+                + window.location.host
+                + '/ws/room/'
+                + roomId
+                + '/'
+            )
+
+            document.querySelector('#chat-message-submit').onclick = function(e) {
+                const messageInputDom = document.querySelector('#chat-message-input');
+                const message = messageInputDom.value;
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'room': currentRoomId
+                }));
+                messageInputDom.value = '';
+            };
+        }
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            addMessage(data);
+        };
+
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function(e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function(e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            chatSocket.send(JSON.stringify({
+                'message': message,
+                'room': currentRoomId
+            }));
+            messageInputDom.value = '';
+        };
+
+        function loadAllMessages(roomId) {
+            $("#chat-log").html("");
+            currentRoomId = roomId;
+            $.ajax({
+                url: `/api/room/${roomId}/messages/`,
+                success: (data) => {
+                    console.log(roomId);
+                    for (var message of data) {
+                        addMessage(message);
+                    }
+                },
+                error: (error) => {
+                    console.error("Couldn't load hub chat messages.");
+                    console.error(error);
+                }
+            });
+        }
+
+        // Let jquery load
+        setTimeout(() => {
+            loadAllMessages(currentRoomId);
+        }, 0);
+    </script>
 {% endblock content %}

@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
@@ -268,3 +268,17 @@ class RoomDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         else:
             return False
 
+
+def get_hub_messages(request, room_pk):
+    room = Room.objects.get(id=room_pk)
+    room_messages = room.messages.all()
+
+    data = []
+    for message in room_messages:
+        data.append({
+            "text": message.text,
+            "owner": message.owner.username,
+            "picture": message.owner.profile.image.url
+        })
+
+    return JsonResponse(data, safe=False)

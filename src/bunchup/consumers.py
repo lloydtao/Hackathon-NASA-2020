@@ -5,7 +5,7 @@ from channels.generic.websocket import WebsocketConsumer
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from .models import Message, Activity
+from .models import Message, Room
 
 
 class ChatConsumer(WebsocketConsumer):
@@ -13,6 +13,9 @@ class ChatConsumer(WebsocketConsumer):
 
     def connect(self):
         self.user = self.scope["user"]
+        print(self.scope)
+        self.room = int(self.scope["url_route"]["kwargs"]["room_id"])
+        print(self.room)
 
         # Generate a unique identity
         self.identity = None
@@ -34,9 +37,9 @@ class ChatConsumer(WebsocketConsumer):
         if message.strip() == "":
             return
 
-        activity = text_data_json["activity"]
+        room_id = text_data_json["room"]
 
-        room = Activity.objects.get(id=activity).room
+        room = Room.objects.get(id=room_id)
 
         model = Message(
             text=message,
@@ -49,6 +52,10 @@ class ChatConsumer(WebsocketConsumer):
 @receiver(post_save, sender=Message, dispatch_uid="react_new_message")
 def react_new_message(sender, instance, **kwargs):
     for identity, channel in ChatConsumer.channels.items():
+
+        if channel.room != instance.room.id:
+            continue
+
         channel.send(text_data=json.dumps({
             "text": instance.text,
             "owner": instance.owner.username,

@@ -1,7 +1,7 @@
 from django.urls import path
 from .views import HomeView, HubView, HubCreateView, HubUpdateView, HubDeleteView, ActivityView, ActivityCreateView, \
     ActivityJoinView, HubJoinView, HubLeaveView, ActivityLeaveView, ActivityUpdateView, RoomDeleteView, RoomUpdateView, \
-    RoomCreateView
+    RoomCreateView, get_hub_messages
 
 urlpatterns = [
     path('', HomeView.as_view(), name='bunchup-home'),
@@ -21,4 +21,5 @@ urlpatterns = [
     path('room/<int:pk>/edit/', RoomUpdateView.as_view(), name='bunchup-room-update'),
     path('room/<int:pk>/delete/', RoomDeleteView.as_view(), name='bunchup-room-delete'),
 
+    path('api/room/<int:room_pk>/messages/', get_hub_messages, name="api-get-hub-messages")
 ]
