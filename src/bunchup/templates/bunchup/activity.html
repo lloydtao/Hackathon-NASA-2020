@@ -24,13 +24,17 @@
 		</div>
 		<div class="col-md-3">
 			<div class="media-body content-section mx-auto">
-				{% comment %} <h2>Controls</h2> {% endcomment %}
-				<div>
-					<a class="btn btn-secondary mt-1 mb-1" href="{% url 'bunchup-activity-join' activity.id %}">Join</a>
-				</div>
+
+                {% if user in activity.users.all %}
 				<div>
 					<a class="btn btn-secondary mt-1 mb-1" href="{% url 'bunchup-activity-leave' activity.id %}">Leave</a>
 				</div>
+                {% else %}
+				<div>
+					<a class="btn btn-secondary mt-1 mb-1" href="{% url 'bunchup-activity-join' activity.id %}">Join</a>
+				</div>
+                {% endif %}
+
 				{% if user in admins %}
 				<hr>
 				<p class="article-title">Admin Controls</p>
@@ -39,6 +43,7 @@
 					<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-delete' hub.id %}">Delete</a>
 				</div>
 				{% endif %}
+
 			</div>
 			<div class="media-body content-section mx-auto">
 				<h2>Users</h2>
