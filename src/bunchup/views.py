@@ -65,12 +65,11 @@ class HubDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 class ActivityView(DetailView):
     model = Activity
     template_name = 'bunchup/activity.html'
-    context_object_name = 'activities'
+    context_object_name = 'activity'
 
-    def get_context_data(self, **kwargs):
-        context = super(ActivityView, self).get_context_data(**kwargs)
-        activity = self.get_object()
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(ActivityView, self).get_context_data(**kwargs)
+    #     return context
 
 
 class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'bunchup.apps.BunchupConfig',
     'crispy_forms',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -130,3 +131,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 LOGIN_REDIRECT_URL = 'bunchup-home'
 
 LOGIN_URL = 'login'
+
+ASGI_APPLICATION = "website.routing.application"
