@@ -29,7 +29,7 @@
 				<h2>Next Activity</h2>
 				<a class="d-block-inline col-md-4 no-text-dec mb-4" href="{% url 'bunchup-activity' next_activity.id %}">
 					<div class="card box-shadow">
-						<img class="card-img-top" src="{{ next_activity.image.url }}" alt="Card image cap">
+						<img id="activity-card" class="card-img-top" src="{{ next_activity.image.url }}" alt="Card image cap">
 						<div class="card-body px-3 py-2">
 							<h4>{{ next_activity.name }}</h4>
 							<small class="card-text">{{ next_activity.description }}</small>
