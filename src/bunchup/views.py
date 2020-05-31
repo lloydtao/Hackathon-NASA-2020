@@ -56,6 +56,7 @@ class HubView(DetailView):
         members = hub.membership_set.filter()
         admins = []
         users = []
+        context['total_users'] = len(hub.users.all())
         for member in members:
             users.append(member.user)
             if member.is_admin:
@@ -122,6 +123,7 @@ class ActivityView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ActivityView, self).get_context_data(**kwargs)
         activity = self.get_object()
+        total_users = len(activity.users.all())
 
         context["chat_messages"] = activity.room.messages.all()
 

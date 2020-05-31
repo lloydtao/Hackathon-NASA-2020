@@ -7,7 +7,7 @@
 				
 				<div class="media-body">
 					<h2><img class="rounded-circle hub-icon" src="{{ hub.image.url }}"> {{ hub.name }}</h2>
-					<p>Hosted by{% for admin in admins %} {{ admin.username }} <img class="rounded-circle hub-icon" src="{{ admin.profile.image.url }}">{% endfor %} Users: {{ hub.total_users }} 999</p>
+					<p>Hosted by{% for admin in admins %} {{ admin.username }} <img class="rounded-circle hub-icon" src="{{ admin.profile.image.url }}">{% endfor %} Users: {{ total_users }}</p>
 					<hr>
 					<p>{{ hub.description }}</p>
 					<div>
