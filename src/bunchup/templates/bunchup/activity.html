@@ -1,18 +1,54 @@
 {% extends "bunchup/base.html" %}
 
 {% block content %}
+	<div class="row">
+		<div class="col-md-9">
+			<div class="media content-section mx-auto">
+				<img class="rounded-circle article-img" src="{{ hub.image.url }}">
+				<div class="media-body">
+					<h2>{{ activity.name }}</h2>
+					<p>Hosted by {{ activity.hub }} <img class="rounded-circle hub-icon" src="{{ activity.hub.image.url }}"></p>
+					<hr>
+					<p>{{ activity.description }}</p>
+				</div>
+			</div>
+			<div class="media content-section mx-auto">
+				<img class="rounded-circle article-img" src="{{ hub.image.url }}">
+				<div class="media-body">
+				<h2>Chat Room</h2>
+					<textarea class="form-control" rows=20 id="chat-log"></textarea><br>
+					<input id="chat-message-input" type="text"><br>
+					<input id="chat-message-submit" type="button" value="Send">
+				</div>
+			</div>
+		</div>
+		<div class="col-md-3">
+			<div class="media-body content-section mx-auto">
+				<h2>Controls</h2>
+				<div>
+					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-activity-join' activity.id %}">Join</a>
+				</div>
+				<div>
+					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-activity-leave' activity.id %}">Leave</a>
+				</div>
+				{% if user in admins %}
+				<hr>
+				<p class="article-title">Admin Controls</p>
+				<div>
+					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-update' hub.id %}">Update</a>
+					<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-delete' hub.id %}">Delete</a>
+				</div>
+				{% endif %}
+			</div>
+			<div class="media-body content-section mx-auto">
+				<h2>Users</h2>
+				{% for user in activity.users.all %}
+					<p><img class="rounded-circle hub-icon" src="{{ user.profile.image.url }}"> {{ user.username }}</p>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
 
-    {{ activity.name }}
-    {{ activity.hub.users }}
-
-    <h1>
-        Chat
-    </h1>
-    <div class="container rounded border border-light p-4">
-        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-        <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Send">
-    </div>
 
     {{ activity.id|json_script:"activity-id" }}
     <script>
