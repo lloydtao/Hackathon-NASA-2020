@@ -135,7 +135,6 @@ class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class ActivityJoinView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        print("PRIMARY KEY: ", kwargs['pk'])
         activity = Activity.objects.get(pk=kwargs['pk'])
         activity.users.add(self.request.user)
         activity.save()
@@ -144,8 +143,23 @@ class ActivityJoinView(LoginRequiredMixin, View):
 
 class HubJoinView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
-        print("PRIMARY KEY: ", kwargs['pk'])
         hub = Hub.objects.get(pk=kwargs['pk'])
         hub.users.add(self.request.user)
         hub.save()
         return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(hub.pk)}))
+
+
+class HubLeaveView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        hub = Hub.objects.get(pk=kwargs['pk'])
+        hub.users.remove(self.request.user)
+        hub.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(hub.pk)}))
+
+
+class ActivityLeaveView(LoginRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        activity = Activity.objects.get(pk=kwargs['pk'])
+        activity.users.remove(self.request.user)
+        activity.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(activity.pk)}))
