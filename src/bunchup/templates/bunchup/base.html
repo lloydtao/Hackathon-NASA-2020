@@ -26,7 +26,9 @@
 		<header class="site-header">
 			<nav class="navbar navbar-expand-md navbar-dark header-dark fixed-top">
 				<div class="container">
-					<a class="navbar-brand mr-4" href="{% url 'bunchup-home' %}">Bunchup</a>
+					<div>
+					<a href="{% url 'bunchup-home' %}"><img class="navbar-brand mr-4" src="{% static 'bunchup/img/nasa-bunchup-29px.png' %}"></img></a>
+					</div>
 					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 						<span class="navbar-toggler-icon"></span>
 					</button>
