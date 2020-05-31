@@ -60,7 +60,7 @@
 
         {% for chat_message in chat_messages %}
             addMessage(JSON.parse(
-                "{ \"text\": \"{{ chat_message.text }}\" }"
+                "{ \"text\": \"{{ chat_message.owner }}: {{ chat_message.text }}\" }"
             ));
         {% endfor %}
     </script>
