@@ -26,7 +26,7 @@ class HubView(DetailView):
 
 class HubCreateView(LoginRequiredMixin, CreateView):
     model = Hub
-    fields = ['name', 'description', 'locked', 'tags']
+    fields = ['name', 'description', 'locked', 'tags', 'image']
 
     def form_valid(self, form):
         self.object = form.save()
@@ -41,7 +41,7 @@ class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Hub
     context_object_name = 'hubs'
     template_name = 'bunchup/hub_update.html'
-    fields = ['name', 'description', 'locked', 'tags']
+    fields = ['name', 'description', 'locked', 'tags', 'image']
     
     def test_func(self):
         hub = self.get_object()
