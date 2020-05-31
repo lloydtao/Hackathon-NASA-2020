@@ -92,3 +92,6 @@ class Membership(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     hub = models.ForeignKey(Hub, on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str('%s %s %s %s %s %s' % ("Hub:", self.hub, "| Member:", self.user, "| Admin:", self.is_admin))
