@@ -48,7 +48,7 @@ class Activity(models.Model):
     description = models.CharField(max_length=1024)
     hub = models.ForeignKey(Hub, on_delete=models.CASCADE, null=True)
     room = models.OneToOneField('Room', on_delete=models.CASCADE, null=True, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = TagField()
     start_date = models.DateTimeField(default=timezone.now)
     finish_date = models.DateTimeField(default=one_day_hence())
     users = models.ManyToManyField(User, blank=True)

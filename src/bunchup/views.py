@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 
 from tagging.models import Tag, TaggedItem
+from titlecase import titlecase
 
 from .models import Hub, Activity, Membership, Room
 from .forms import ImageUploadForm
@@ -19,22 +20,29 @@ class HomeView(ListView):
         context["highlights"] = {}
 
         featured = Hub.objects.all()
-        context["highlights"]["Featured"] = featured
-
-        minecraft_tag = Tag.objects.get(name="minecraft")
-        print(minecraft_tag)
-        minecraft_activities = TaggedItem.objects.get_by_model(Hub, minecraft_tag)
-        print(len(minecraft_activities))
-        context["highlights"]["Minecraft"] = minecraft_activities
-
-        skribbl_tag = Tag.objects.get(name="skribbl.io")
-        print(skribbl_tag)
-        skribbl_activities = TaggedItem.objects.get_by_model(Hub, skribbl_tag)
-        print(len(skribbl_activities))
-        context["highlights"]["Skribbl.io"] = skribbl_activities
+        context["highlights"]["Featured Hubs"] = featured
 
         activities = Activity.objects.all()
         context["highlights"]["Activities"] = activities
+
+        for tag in Tag.objects.all():
+            titled_tag_name = titlecase(tag.name)
+
+            try:
+                tag_hubs = TaggedItem.objects.get_by_model(Hub, tag)
+
+                if len(tag_hubs) > 0:
+                    context["highlights"][f"{titled_tag_name} Hubs"] = tag_hubs
+            except Tag.DoesNotExist:
+                pass
+
+            try:
+                tag_activities = TaggedItem.objects.get_by_model(Activity, tag)
+
+                if len(tag_activities) > 0:
+                    context["highlights"][f"{titled_tag_name} Activities"] = tag_activities
+            except Tag.DoesNotExist:
+                pass
 
         return context
     
@@ -114,7 +122,7 @@ class ActivityView(DetailView):
 class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Activity
     context_object_name = 'activities'
-    fields = ['name', 'description', 'start_date', 'finish_date']
+    fields = ['name', 'description', 'tags', 'start_date', 'finish_date']
 
     def form_valid(self, form):
         self.object = form.save()
