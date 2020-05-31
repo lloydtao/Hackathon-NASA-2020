@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .models import Hub, Activity, Membership
+from .models import Hub, Activity, Membership, Room
 
 class HomeView(ListView):
     model = Hub
@@ -83,6 +83,13 @@ class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         pk = self.kwargs['pk']
         self.object.hub = Hub.objects.get(pk=pk)
         self.object.users.add(self.request.user)
+        room = Room(name=self.object.name,
+                    description=self.object.description,
+                    hub=self.object.hub,
+                    activity_room=True
+                    )
+        room.save()
+        self.object.room = room
         self.object.save()
         return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(self.object.pk)}))
 
