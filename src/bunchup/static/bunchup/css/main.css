@@ -3,6 +3,7 @@ body {
   color: #333333;
   margin-top: 5rem;
   font-family: raleway;
+    overflow-y: scroll;
 }
 
 h1, h2, h3, h4, h5, h6 {
