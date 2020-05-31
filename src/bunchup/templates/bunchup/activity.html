@@ -8,7 +8,7 @@
 				<img class="rounded-circle article-img" src="{{ hub.image.url }}">
 				<div class="media-body">
 					<h2>{{ activity.name }}</h2>
-					<p>Hosted by {{ activity.hub }} <img class="rounded-circle hub-icon" src="{{ activity.hub.image.url }}"></p>
+					<p>Hosted by <a href="{% url 'bunchup-hub' activity.hub.id %}">{{ activity.hub }} <img class="rounded-circle hub-icon" src="{{ activity.hub.image.url }}"></p></a>
 					<hr>
 					<p>{{ activity.description }}</p>
 				</div>
