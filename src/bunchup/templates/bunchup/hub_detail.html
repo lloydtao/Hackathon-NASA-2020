@@ -27,7 +27,7 @@
 		<div class="col-md-12">
 			<div class="media-body cute-container content-section mx-auto">
 				<h2>Next Activity</h2>
-				<a class="d-block-inline col-md-4 no-text-dec mb-4" href="/hub/16/">
+				<a class="d-block-inline col-md-4 no-text-dec mb-4" href="{% url 'bunchup-activity' next_activity.id %}">
 					<div class="card box-shadow">
 						<img class="card-img-top" src="{{ next_activity.image.url }}" alt="Card image cap">
 						<div class="card-body px-3 py-2">
@@ -67,7 +67,7 @@
 		<h2>Upcoming Activities</h2>
 		<div class="row">
 			{% for activity in activities %}
-				<a class="d-block-inline col-md-4 no-text-dec mb-4" href="/hub/16/">
+				<a class="d-block-inline col-md-4 no-text-dec mb-4" href="{% url 'bunchup-activity' activity.id %}">
 					<div class="card box-shadow">
 						<img class="card-img-top" src="{{ activity.image.url }}" alt="Card image cap">
 						<div class="card-body px-3 py-2">
