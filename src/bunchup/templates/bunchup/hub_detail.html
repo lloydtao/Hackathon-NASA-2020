@@ -5,15 +5,17 @@
 			<img class="rounded-circle article-img" src="{{ hub.image.url }}">
 			<div class="media-body">
 				<div class="article-metadata">
-						{% if user in admins %}
-						<div>
-							<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-update' hub.id %}">Update
-							<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-delete' hub.id %}">Delete</a>
-						</div>
-						{% endif %}
 				</div>
 				<h2 class="article-title">{{ hub.name }}</h2>
 				<p class="article-content">{{ hub.description }}</p>
+				{% if user in admins %}
+				<hr>
+				<p class="article-title">Admin Controls</p>
+				<div>
+					<a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-update' hub.id %}">Update</a>
+					<a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'bunchup-hub-delete' hub.id %}">Delete</a>
+				</div>
+				{% endif %}
 			</div>
 		</article>
 {% endblock content %}
