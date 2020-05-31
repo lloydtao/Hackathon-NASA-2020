@@ -54,3 +54,12 @@ ul {
 .cute-container {
     max-width: 600px;
 }
+
+.jumbotron {
+  background-image: url("https://freepik.cdnpk.net/assets/b1bde199d76dd22fc49aa288b0d5ab10.svg");
+  background-size: cover;
+}
+
+.jumbotron h1, .jumbotron h3 {
+	color: #eee;
+}
