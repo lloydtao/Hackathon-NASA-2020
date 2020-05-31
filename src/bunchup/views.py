@@ -76,6 +76,11 @@ class HubCreateView(LoginRequiredMixin, CreateView):
             hub=self.object,
             is_admin=True
         )
+        general_room = Room(name="General",
+                            description="A general room to discuss anything.",
+                            hub=self.object,
+                            activity_room=False)
+        general_room.save()
         return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(self.object.pk)}))
 
 
