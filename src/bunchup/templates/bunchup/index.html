@@ -13,16 +13,16 @@
 	
 	<h1>Featured</h1>
     <div class="row">
-        <div class="col-md-4">
 			{% for hub in hubs %}
-          <div class="card mb-12 box-shadow">
+        <div class="col-md-4">
+          <div class="card box-shadow">
             <img class="card-img-top" src="{{ hub.image.url }}" alt="Card image cap">
             <div class="card-body">
 	  	      <h4><a href="{% url 'bunchup-hub' hub.id %}">{{ hub.name }}</a></h4>
               <small class="card-text">{{ hub.description }}</small>
             </div>
           </div>
-	  {% endfor %}
         </div>
+	  {% endfor %}
 	</div>
 {% endblock content %}
