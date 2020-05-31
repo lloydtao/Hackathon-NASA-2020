@@ -16,6 +16,12 @@
 
     {{ activity.id|json_script:"activity-id" }}
     <script>
+        function addMessage(message) {
+            let chatLog = document.querySelector('#chat-log');
+            chatLog.value += (message.text + '\n');
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
         const activityId = JSON.parse(document.getElementById("activity-id").textContent);
 
         const chatSocket = new WebSocket(
@@ -28,7 +34,7 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            addMessage(data);
         };
 
         chatSocket.onclose = function(e) {
@@ -46,10 +52,17 @@
             const messageInputDom = document.querySelector('#chat-message-input');
             const message = messageInputDom.value;
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': message,
+                'activity': activityId
             }));
             messageInputDom.value = '';
         };
+
+        {% for chat_message in chat_messages %}
+            addMessage(JSON.parse(
+                "{ \"text\": \"{{ chat_message.text }}\" }"
+            ));
+        {% endfor %}
     </script>
 
 

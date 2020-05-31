@@ -68,9 +68,13 @@ class ActivityView(DetailView):
     template_name = 'bunchup/activity.html'
     context_object_name = 'activity'
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(ActivityView, self).get_context_data(**kwargs)
-    #     return context
+    def get_context_data(self, **kwargs):
+        context = super(ActivityView, self).get_context_data(**kwargs)
+        activity = self.get_object()
+
+        context["chat_messages"] = activity.room.messages.all()
+
+        return context
 
 
 class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
