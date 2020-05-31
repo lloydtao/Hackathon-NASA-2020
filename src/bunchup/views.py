@@ -62,15 +62,35 @@ class HubDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return False
 
 
-
-
 class ActivityView(DetailView):
     model = Activity
     template_name = 'bunchup/activity.html'
     context_object_name = 'activities'
 
+    def get_context_data(self, **kwargs):
+        context = super(ActivityView, self).get_context_data(**kwargs)
+        activity = self.get_object()
+        return context
 
-class ActivityCreateView(LoginRequiredMixin, CreateView):
+
+class ActivityCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Activity
     context_object_name = 'activities'
     fields = ['name', 'description', 'start_date', 'finish_date']
+
+    def form_valid(self, form):
+        self.object = form.save()
+        pk = self.kwargs['pk']
+        self.object.hub = Hub.objects.get(pk=pk)
+        self.object.users.add(self.request.user)
+        self.object.save()
+        return HttpResponseRedirect("/activity/"+str(self.object.pk))
+
+    def test_func(self):
+        hub = Hub.objects.get(pk=self.kwargs['pk'])
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
+
+
