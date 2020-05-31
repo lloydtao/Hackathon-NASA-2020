@@ -1,6 +1,7 @@
 from django.urls import path
 from .views import HomeView, HubView, HubCreateView, HubUpdateView, HubDeleteView, ActivityView, ActivityCreateView, \
-    ActivityJoinView, HubJoinView, HubLeaveView, ActivityLeaveView, ActivityUpdateView
+    ActivityJoinView, HubJoinView, HubLeaveView, ActivityLeaveView, ActivityUpdateView, RoomDeleteView, RoomUpdateView, \
+    RoomCreateView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='bunchup-home'),
@@ -16,4 +17,8 @@ urlpatterns = [
     path('activity/<int:pk>/leave/', ActivityLeaveView.as_view(), name='bunchup-activity-leave'),
     path('create/hub/', HubCreateView.as_view(), name='bunchup-hub-create'),
     path('hub/<int:pk>/create/activity/', ActivityCreateView.as_view(), name='bunchup-activity-create'),
+    path('hub/<int:pk>/create/room', RoomCreateView.as_view(), name='bunchup-room-create'),
+    path('room/<int:pk>/edit/', RoomUpdateView.as_view(), name='bunchup-room-update'),
+    path('room/<int:pk>/delete/', RoomDeleteView.as_view(), name='bunchup-room-delete'),
+
 ]

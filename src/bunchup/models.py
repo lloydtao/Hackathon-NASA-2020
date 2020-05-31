@@ -74,7 +74,7 @@ class Activity(models.Model):
 class Room(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
-    hub = models.ForeignKey(Hub, on_delete=models.CASCADE)
+    hub = models.ForeignKey(Hub, on_delete=models.CASCADE, blank=True, null=True)
     activity_room = models.BooleanField(default=False)
 
     def __str__(self):
