@@ -10,7 +10,8 @@ main {
     width: 64px;
     height: 64px;
     border-radius: 100%;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16);
+    /* box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16); */
+    border: 1px solid #707070;
 }
 
 .text-heebo {
@@ -34,7 +35,7 @@ main {
 .bunch-button {
     background-color: #FAD089;
     color: #355C7D;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16);
+    /* box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16); */
     width: 306px;
     height: 77px;
     border-radius: 20px;
@@ -44,7 +45,8 @@ main {
     width: 346px;
     height: 216px;
     border-radius: 24px;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16);
+    /* box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16); */
+    border: 1px solid #707070;
 }
 
 .hub-box-background-image {
@@ -78,12 +80,12 @@ main {
 .hub-scroll {
     display: flex;
     flex-direction: row;
-    overflow-x: scroll;
+    overflow-x: auto;
     overflow-y: hidden;
 }
 
 .hub-scroll-element {
-
+    
 }
 
 .chunky-container {
