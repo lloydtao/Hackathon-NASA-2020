@@ -47,6 +47,7 @@ class Activity(models.Model):
     tags = models.ManyToManyField(Tag, blank=True)
     start_date = models.DateTimeField(default=timezone.now)
     finish_date = models.DateTimeField(default=one_day_hence())
+    users = models.ManyToManyField(User, blank=True)
     image = models.ImageField(default='default-activity.png', upload_to='activity_pics')
 
     def save(self, **kwargs):
