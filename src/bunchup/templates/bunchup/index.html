@@ -16,7 +16,7 @@
         <div class="col-md-4">
 			{% for hub in hubs %}
           <div class="card mb-12 box-shadow">
-            <img class="card-img-top" src="https://res.cloudinary.com/practicaldev/image/fetch/s--5nUdclIu--/c_imagga_scale,f_auto,fl_progressive,h_900,q_auto,w_1600/https://dev-to-uploads.s3.amazonaws.com/i/cxd5jculpfpuyuo5a81r.jpg" alt="Card image cap">
+            <img class="card-img-top" src="{{ hub.image.url }}" alt="Card image cap">
             <div class="card-body">
 	  	      <h4><a href="{% url 'bunchup-hub' hub.id %}">{{ hub.name }}</a></h4>
               <small class="card-text">{{ hub.description }}</small>
