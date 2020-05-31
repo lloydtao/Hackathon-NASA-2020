@@ -1,6 +1,6 @@
 from django.urls import path
 from .views import HomeView, HubView, HubCreateView, HubUpdateView, HubDeleteView, ActivityView, ActivityCreateView, \
-    ActivityJoinView, HubJoinView, HubLeaveView, ActivityLeaveView
+    ActivityJoinView, HubJoinView, HubLeaveView, ActivityLeaveView, ActivityUpdateView
 
 urlpatterns = [
     path('', HomeView.as_view(), name='bunchup-home'),
@@ -10,10 +10,10 @@ urlpatterns = [
     path('hub/<int:pk>/join', HubJoinView.as_view(), name='bunchup-hub-join'),
     path('hub/<int:pk>/leave', HubLeaveView.as_view(), name='bunchup-hub-leave'),
     path('activity/<int:pk>/', ActivityView.as_view(), name='bunchup-activity'),
-    path('activity/<int:pk>/delete', ActivityView.as_view(), name='bunchup-activity-delete'),
-    path('activity/<int:pk>/update', ActivityView.as_view(), name='bunchup-activity-update'),
-    path('activity/<int:pk>/join', ActivityJoinView.as_view(), name='bunchup-activity-join'),
-    path('activity/<int:pk>/leave', ActivityLeaveView.as_view(), name='bunchup-activity-leave'),
+    path('activity/<int:pk>/delete/', ActivityView.as_view(), name='bunchup-activity-delete'),
+    path('activity/<int:pk>/edit/', ActivityUpdateView.as_view(), name='bunchup-activity-update'),
+    path('activity/<int:pk>/join/', ActivityJoinView.as_view(), name='bunchup-activity-join'),
+    path('activity/<int:pk>/leave/', ActivityLeaveView.as_view(), name='bunchup-activity-leave'),
     path('create/hub/', HubCreateView.as_view(), name='bunchup-hub-create'),
     path('hub/<int:pk>/create/activity/', ActivityCreateView.as_view(), name='bunchup-activity-create'),
 ]

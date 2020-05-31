@@ -64,6 +64,10 @@ class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     context_object_name = 'hubs'
     template_name = 'bunchup/hub_update.html'
 
+    def form_valid(self, form):
+        self.object = form.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-hub", kwargs={"pk": str(self.object.pk)}))
+
     def test_func(self):
         hub = self.get_object()
         if hub.membership_set.filter(user=self.request.user).exists():
@@ -139,10 +143,21 @@ class ActivityDeleteView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 class ActivityUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Hub
-    context_object_name = 'hubs'
+    model = Activity
+    context_object_name = 'activities'
     template_name = 'bunchup/activity_update.html'
     fields = ['name', 'description', 'tags', 'start_date', 'finish_date', 'image']
+
+    def form_valid(self, form):
+        self.object = form.save()
+        return HttpResponseRedirect(reverse_lazy("bunchup-activity", kwargs={"pk": str(self.object.pk)}))
+
+    def test_func(self):
+        hub = self.get_object().hub
+        if hub.membership_set.filter(user=self.request.user).exists():
+            return hub.membership_set.get(user=self.request.user).is_admin
+        else:
+            return False
 
     def test_func(self):
         hub = self.get_object()
