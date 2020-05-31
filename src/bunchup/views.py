@@ -3,6 +3,9 @@ from django.shortcuts import render
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
+
+from tagging.models import Tag, TaggedItem
+
 from .models import Hub, Activity, Membership, Room
 from .forms import ImageUploadForm
 
@@ -18,10 +21,16 @@ class HomeView(ListView):
         featured = Hub.objects.all()
         context["highlights"]["Featured"] = featured
 
-        minecraft_activities = Activity.objects.filter(tags__title__contains="minecraft")
+        minecraft_tag = Tag.objects.get(name="minecraft")
+        print(minecraft_tag)
+        minecraft_activities = TaggedItem.objects.get_by_model(Hub, minecraft_tag)
+        print(len(minecraft_activities))
         context["highlights"]["Minecraft"] = minecraft_activities
 
-        skribbl_activities = Activity.objects.filter(tags__title__contains="skribbl.io")
+        skribbl_tag = Tag.objects.get(name="skribbl.io")
+        print(skribbl_tag)
+        skribbl_activities = TaggedItem.objects.get_by_model(Hub, skribbl_tag)
+        print(len(skribbl_activities))
         context["highlights"]["Skribbl.io"] = skribbl_activities
 
         activities = Activity.objects.all()

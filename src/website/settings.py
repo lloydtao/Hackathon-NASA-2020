@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'bunchup.apps.BunchupConfig',
     'crispy_forms',
-    'channels'
+    'channels',
+    'tagging'
 ]
 
 MIDDLEWARE = [

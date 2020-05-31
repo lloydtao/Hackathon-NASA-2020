@@ -2,6 +2,9 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
+from tagging.registry import register
+from tagging.fields import TagField
+
 from PIL import Image
 
 def one_day_hence():
@@ -19,7 +22,8 @@ class Hub(models.Model):
     name = models.CharField(max_length=128)
     description = models.CharField(max_length=1024)
     locked = models.BooleanField(default=False)
-    tags = models.ManyToManyField(Tag, blank=True)
+    # tags = models.ManyToManyField(Tag, blank=True)
+    tags = TagField()
     users = models.ManyToManyField(User, through='Membership', blank=True)
     image = models.ImageField(default='default-hub.png', upload_to='hub_pics')
 
