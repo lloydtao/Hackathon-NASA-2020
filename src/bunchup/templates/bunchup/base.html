@@ -31,14 +31,18 @@
 	<body>
 		<header class="site-header py-1">
 			<nav class="navbar navbar-expand-md fixed-top bg-white navbar-shadow">
-				<div class="container">
-                    <a class="mx-auto" href="{% url 'bunchup-home' %}">
-                        <img class="nav-elephant-logo" src="{% static 'bunchup/img/logo.png' %}"></img>
-                    </a>
+				<div class="row mx-auto w-100">
+                    <div class="col-4">
+                    </div>
+                    <div class="col-4">
+                        <a class="mx-auto" href="{% url 'bunchup-home' %}">
+                            <img class="nav-elephant-logo" src="{% static 'bunchup/img/logo.png' %}"></img>
+                        </a>
+                    </div>
 
                     <!-- Navbar Right Side -->
                     {% if user.is_authenticated %}
-                    <div>
+                    <div class="col-4 my-auto">
                         <a class="no-text-dec" href="{% url 'profile' %}">
                             <img class="peng-profile-image mr-3" src="{{ user.profile.image.url }}"></img>
                             <h3 class="d-inline text-heebo">
@@ -50,7 +54,7 @@
                         </a>
                     </div>
                     {% else %}
-                    <div>
+                    <div class="col-4">
                         <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
                         <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     </div>
