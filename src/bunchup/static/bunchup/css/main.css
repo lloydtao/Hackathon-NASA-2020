@@ -80,3 +80,11 @@ background-size: cover;
 .jumbotron h1, .jumbotron h3 {
 	color: #eee;
 }
+
+.no-text-dec:hover {
+    text-decoration: none;
+}
+
+.card-img-top {
+    height: 170px;
+}
