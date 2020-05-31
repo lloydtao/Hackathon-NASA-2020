@@ -41,13 +41,12 @@
                     <div>
                         <a class="no-text-dec" href="{% url 'profile' %}">
                             <img class="peng-profile-image mr-3" src="{{ user.profile.image.url }}"></img>
-                            <h2 class="d-inline text-heebo">
+                            <h3 class="d-inline text-heebo">
                                 {{ user.username }}
-                            </h2>
+                            </h3>
                         </a>
                         <a class="mx-2" href="{% url 'logout' %}">
-                            {% comment %} <object data="{% static 'bunchup/img/arrow-down.svg' %}" type="image/svg+xml"></object> {% endcomment %}
-                            <img src="{% static 'bunchup/img/arrow-down.svg' %}"></img>
+                            <img class="icon-sm" src="{% static 'bunchup/img/arrow-down.svg' %}"></img>
                         </a>
                     </div>
                     {% else %}

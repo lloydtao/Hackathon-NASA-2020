@@ -7,8 +7,8 @@ main {
 }
 
 .peng-profile-image {
-    width: 72px;
-    height: 72px;
+    width: 64px;
+    height: 64px;
     border-radius: 100%;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.16);
 }
@@ -88,4 +88,8 @@ main {
 
 .chunky-container {
     max-width: 1600px;
+}
+
+.icon-sm {
+    max-width: 20px;
 }
