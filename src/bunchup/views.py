@@ -26,7 +26,7 @@ class HubView(DetailView):
 
 class HubCreateView(LoginRequiredMixin, CreateView):
     model = Hub
-    fields = ['name', 'description', 'locked', 'tags', 'image']
+    form_class = ImageUploadForm
 
     def form_valid(self, form):
         self.object = form.save()
@@ -39,9 +39,9 @@ class HubCreateView(LoginRequiredMixin, CreateView):
 
 class HubUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Hub
+    form_class = ImageUploadForm
     context_object_name = 'hubs'
     template_name = 'bunchup/hub_update.html'
-    fields = ['name', 'description', 'locked', 'tags', 'image']
     
     def test_func(self):
         hub = self.get_object()
